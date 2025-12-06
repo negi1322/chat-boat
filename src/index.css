@@ -7,6 +7,8 @@
 
 div#root {
   height: 100vh;
+  background-color: #efefef;
+  position: relative;
 }
 
 /* Reusable styling */
@@ -17,9 +19,128 @@ input {
   font-size: 16px !important;
 }
 
+.orange {
+  background-color: rgb(255, 140, 25);
+}
 
 /* Login page styling start */
 .sc-kcLKEh.gTVTDn {
   height: 100vh;
   place-content: center;
+}
+
+/* home section stylign start here - -- -- -- -- -- */
+
+.conntainer-nav {
+  position: relative;
+  top: 15px;
+}
+
+.select-cat {
+  color: rgb(100 108 116);
+}
+
+.select-cat {
+  font-size: 16px;
+  position: relative;
+  cursor: pointer;
+}
+
+.select-cat::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px; /* line thickness */
+  background: rgb(255, 140, 25);
+  transition: width 0.5s ease;
+}
+
+.select-cat:hover {
+  color: rgb(255, 140, 25) !important;
+  font-weight: 800;
+  font-size: 18px;
+}
+.select-cat:hover::after {
+  width: 100%;
+}
+.day-btn {
+  background: linear-gradient(90deg, #ae5400 0%, #f3883b 100%);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.2s ease-in-out;
+  text-align: center;
+}
+.day-btn:hover {
+  scale: 1;
+}
+
+.one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Chat Sidebar */
+.chat-sidebar {
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  left: -400px;
+  width: 350px;
+  height: 100vh;
+  background: white;
+  padding: 20px;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  transition: left 0.55s ease;
+}
+
+/* When Open */
+.chat-sidebar.open {
+  left: 0 !important;
+  width: 100% !important;
+}
+
+/* small icon box style */
+.icon-box {
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+img.img-fluid.user-img {
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+.position-absolute .top-0 .image{
+  right: 0 !important;
+}
+/* home section stylign end here - -- -- -- -- -- */
+
+/* Medaia query for mobile responsive */
+@media screen and (max-width: 600px) {
+  div#root {
+    height: 100% !important;
+    background-color: white;
+  }
+  img.img-fluid.user-img {
+    width: 80% !important;
+    height: 50%;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    object-fit: contain;
+  }
 }

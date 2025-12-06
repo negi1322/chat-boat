@@ -1,51 +1,72 @@
-
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./index.css"
+import "./index.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navigate } from "react-router-dom";
 import SignUp from "./Auth/SignUp";
 import FirebaseProvider from "./Firebase/Firebase";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 import Login from "./Auth/Login";
+import Home from "./Home";
+import EditProfile from "./EditProfile";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const PrivateRoute = ({ children }) => {
-  const name = localStorage.getItem("email");
-  if (!name) {
-    return <Navigate to="/" />
+  const uid = localStorage.getItem("uid");
+  if (!uid) {
+    return <Navigate to="/" />;
   }
   return children;
-
-}
+};
 
 const PublicRoute = ({ children }) => {
-  const name = localStorage.getItem("email");
-  if (name) {
-    return <Navigate to="/home" />
+  const uid = localStorage.getItem("uid");
+  if (uid) {
+    toast.error("Logout please!");
+    return <Navigate to="/home" />;
   }
   return children;
-
 };
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <PublicRoute>
-      <SignUp />
-    </PublicRoute>,
-  }, {
+    element: (
+      <PublicRoute>
+        <SignUp />
+      </PublicRoute>
+    ),
+  },
+  {
     path: "/login",
-    element: <PublicRoute>
-      <Login  />
-    </PublicRoute>,
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/home",
+    element: (
+      <PrivateRoute>
+        <Home />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/edit",
+    element: (
+      <PrivateRoute>
+        <EditProfile/>
+      </PrivateRoute>
+    ),
   },
 ]);
 
-
 createRoot(document.getElementById("root")).render(
-  <FirebaseProvider >
+  <FirebaseProvider>
     <ToastContainer />
     <RouterProvider router={router} />
   </FirebaseProvider>
