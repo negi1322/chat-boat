@@ -43,6 +43,7 @@ const FirebaseProvider = ({ children }) => {
         return addDoc(collection(firestore, "users"), data);
     }
 
+
     return (
         <FirebaseContext.Provider value={{
             createUser,

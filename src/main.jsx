@@ -11,7 +11,8 @@ import { toast, ToastContainer } from "react-toastify";
 import Login from "./Auth/Login";
 import Home from "./Home";
 import EditProfile from "./EditProfile";
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import Users from "./Users";
+import User from "./User";
 
 const PrivateRoute = ({ children }) => {
   const uid = localStorage.getItem("uid");
@@ -56,10 +57,25 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/edit",
+    path: "/edit/:id",
     element: (
       <PrivateRoute>
-        <EditProfile/>
+        <EditProfile />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/users",
+    element: (
+      <PrivateRoute>
+        <Users />
+      </PrivateRoute>
+    ),
+  }, {
+    path: "/user/:id",
+    element: (
+      <PrivateRoute>
+        <User />
       </PrivateRoute>
     ),
   },

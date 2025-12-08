@@ -1,14 +1,11 @@
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   font-family: "Roboto", sans-serif !important;
-}
 
-div#root {
-  height: 100vh;
-  background-color: #efefef;
-  position: relative;
 }
 
 /* Reusable styling */
@@ -19,8 +16,12 @@ input {
   font-size: 16px !important;
 }
 
-.orange {
-  background-color: rgb(255, 140, 25);
+.brown {
+  background-color: #F8F8F8;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 /* Login page styling start */
@@ -31,55 +32,94 @@ input {
 
 /* home section stylign start here - -- -- -- -- -- */
 
-.conntainer-nav {
-  position: relative;
-  top: 15px;
-}
-
-.select-cat {
-  color: rgb(100 108 116);
-}
-
-.select-cat {
-  font-size: 16px;
-  position: relative;
-  cursor: pointer;
-}
-
-.select-cat::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0%;
-  height: 2px; /* line thickness */
-  background: rgb(255, 140, 25);
-  transition: width 0.5s ease;
-}
-
-.select-cat:hover {
-  color: rgb(255, 140, 25) !important;
-  font-weight: 800;
-  font-size: 18px;
-}
-.select-cat:hover::after {
-  width: 100%;
-}
-.day-btn {
-  background: linear-gradient(90deg, #ae5400 0%, #f3883b 100%);
-  color: white;
-  border: none;
-  padding: 10px;
+.messangers {
+  background-color: #F8F8F8;
+  display: flex;
+  gap: 12px;
+  padding: 5px;
   border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  width: 100%;
-  transition: 0.2s ease-in-out;
-  text-align: center;
 }
-.day-btn:hover {
-  scale: 1;
+
+
+
+img.img-message.img-fluid {
+  overflow: hidden;
+  position: absolute;
+  z-index: 111;
+  object-fit: contain;
+  aspect-ratio: 1;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.ms-btn {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  place-self: center;
+  background-color: #116AD1;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ms-tag {
+  color: #424242;
+}
+
+.iiii {
+  border: 1px solid gainsboro;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.image {
+  border: 1px solid gainsboro;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.online-user-image {
+  border: 1px solid gainsboro;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+
+
+.view-btn {
+  font-size: 10px;
+  padding: 6px;
+  font-weight: bolder;
+  width: fit-content !important;
+}
+
+img.img-fluid.rounded-circle {
+  position: absolute;
+  aspect-ratio: 1;
+  object-fit: cover;
 }
 
 .one-line {
@@ -87,6 +127,17 @@ input {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.cont-1 {
+  background-color: #F8F8F8;
+}
+
+.brown::placeholder {
+  background-color: #F8F8F8;
+  width: 100%;
+  padding-left: 120px;
+}
+
 /* Chat Sidebar */
 .chat-sidebar {
   overflow-y: auto;
@@ -125,10 +176,64 @@ img.img-fluid.user-img {
   aspect-ratio: 1;
   object-fit: contain;
 }
-.position-absolute .top-0 .image{
+
+.position-absolute .top-0 .image {
   right: 0 !important;
 }
+
 /* home section stylign end here - -- -- -- -- -- */
+
+/* Edit section stylign start here ---------- */
+
+.edit-image {
+  border: 1px solid;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.inputForm {
+  border: 1.5px solid #ecedec;
+  border-radius: 10px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  transition: 0.2s ease-in-out;
+  background-color: white;
+}
+
+.input {
+  border-radius: 10px;
+  border: none;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+}
+
+.input:focus {
+  outline: none;
+  padding: 10px;
+}
+
+.input::placeholder {
+  color: #888;
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 1;
+
+}
+
+.set-icons {
+  position: absolute;
+  top: 22%;
+  left: 2%;
+}
 
 /* Medaia query for mobile responsive */
 @media screen and (max-width: 600px) {
@@ -136,6 +241,7 @@ img.img-fluid.user-img {
     height: 100% !important;
     background-color: white;
   }
+
   img.img-fluid.user-img {
     width: 80% !important;
     height: 50%;
