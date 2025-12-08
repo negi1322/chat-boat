@@ -12,16 +12,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // const getData = async () => {
-  //   try {
-  //     const ref = doc(firestore, "users", "Rx5Eg1i3H5ZTvn969W5kGTuyiWz2");
-  //     const snapshot = await getDoc(ref);
-  //     console.log(snapshot.data()?.values)
-  //   } catch (err) {
-  //     console.log("Error:", err);
-  //   }
-  // };
-
   const singup = async (e) => {
     e.preventDefault();
     if (password === "" || email === "") {

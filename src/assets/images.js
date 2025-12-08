@@ -1,8 +1,10 @@
 import SIGNUP from "../assets/singup.png"
 import LOGO from "../assets/logo.png"
+import CHAT from "../assets/chats.png"
 const IMAGES = {
     SIGNUP,
-    LOGO
+    LOGO,
+    CHAT
 };
 
 export default IMAGES;

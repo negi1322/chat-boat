@@ -1,0 +1,144 @@
+import { Query, getDocs, collection } from "firebase/firestore";
+import { firestore } from "./Firebase/Firebase";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import IMAGES from "./assets/images";
+import { useNavigate } from "react-router-dom";
+
+const Users = () => {
+    const [user, setUserData] = useState([]);
+    const [search, setSearch] = useState("");
+
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const id = localStorage.getItem("uid");
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        getData();
+    }, []);
+
+    const getData = async () => {
+        try {
+            const ref = collection(firestore, "users");
+            const snapshot = await getDocs(ref);
+
+            const allUsers = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            setUserData(allUsers);
+        } catch (err) {
+            toast.error(err);
+        }
+    };
+
+    const filteredUsers = user.filter((item) =>
+        item?.values?.name?.toLowerCase().includes(search.toLowerCase())
+    );
+
+    return (
+        <>
+            <div className="container-xxl">
+                <div className="row justify-content-between">
+
+                    <div className="col-md-1 cont-1 d-flex align-items-center flex-column ">
+                        <div className="d-flex flex-column align-items-center ">
+                            <div
+                                onClick={() => navigate(`/edit/${id}`, { state: user })}
+                                className="iiii mt-5"
+                            >
+                                <img
+                                    src={userData?.image}
+                                    alt="user-image"
+                                    className="img-fluid rounded-circle"
+                                />
+                            </div>
+                            <h6 className="mb-0 mt-1 text-center" style={{ fontSize: "13px" }}>
+                                {userData?.name}
+                            </h6>
+                        </div>
+
+                        <div className="d-flex flex-column align-items-center mt-5 ">
+                            <i
+                                style={{ cursor: "pointer" }}
+                                className="bi bi-person-circle fs-1 img-fluid rounded-circle "
+                                onClick={() => navigate("/users")}
+                            ></i>
+                            <h6 className="mb-0 text-center" style={{ fontSize: "13px" }}>
+                                Users
+                            </h6>
+                        </div>
+                    </div>
+
+                    <div className="col-md-11">
+                        <div className="mt-3 ">
+                            <input
+                                type="text"
+                                placeholder="Search Peoples..."
+                                className=" w-100 rounded-5 border border-1 brown ps-5"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                style={{
+                                    border: "1px solid #ccc",
+                                    height: "45px",
+                                    paddingLeft: "12px",
+                                    boxShadow: "unset",
+                                }}
+                            />
+                        </div>
+
+                        {
+                            filteredUsers.length > 0 ?
+                                filteredUsers.map((index, id) => (
+                                    <div
+                                        key={id}
+                                        className="d-flex mt-4 brown rounded-pill px-2 py-2 justify-content-between"
+                                    >
+                                        <div className="w-100 d-flex gap-3 align-items-center">
+                                            <div className="iiii d-flex">
+                                                <img
+                                                    onClick={() =>
+                                                        navigate(`/user/${index?.id}`, { state: index })
+                                                    }
+                                                    src={index?.values?.image}
+                                                    alt="user-image"
+                                                    className="img-fluid rounded-circle"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <h6 className="mt-2 text-secondary fw-bold">
+                                                    {index?.values?.name}
+                                                </h6>
+                                                <h6 className="mt-2 text-secondary fw-bold">
+                                                    {index?.values?.email}
+                                                </h6>
+                                            </div>
+                                        </div>
+
+                                        <div className="me-3 d-flex align-items-center gap-5">
+                                            <div>
+                                                <img
+                                                    src={IMAGES.CHAT}
+                                                    alt=""
+                                                    className="img-fluid pointer"
+                                                />
+                                            </div>
+                                            <div className="pointer">
+                                                <i className="text-primary bi bi-person-plus-fill fs-2"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )) : <div className="d-flex justify-content-center align-items-center">
+
+                                    <h1 className="my-5">NO USER FOUND</h1>
+                                </div>}
+
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+};
+
+export default Users;
