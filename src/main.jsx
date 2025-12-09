@@ -13,6 +13,7 @@ import Home from "./Home";
 import EditProfile from "./EditProfile";
 import Users from "./Users";
 import User from "./User";
+import Chat from "./Chat";
 
 const PrivateRoute = ({ children }) => {
   const uid = localStorage.getItem("uid");
@@ -76,6 +77,13 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <User />
+      </PrivateRoute>
+    ),
+  }, , {
+    path: "/chat/:id",
+    element: (
+      <PrivateRoute>
+        <Chat />
       </PrivateRoute>
     ),
   },

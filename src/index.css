@@ -54,8 +54,8 @@ img.img-message.img-fluid {
 
 .ms-btn {
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   place-self: center;
   background-color: #116AD1;
   color: white;
@@ -75,8 +75,8 @@ img.img-message.img-fluid {
   margin: 0;
   overflow: hidden;
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
   cursor: pointer;
 }
@@ -143,14 +143,14 @@ img.img-fluid.rounded-circle {
   overflow-y: auto;
   position: fixed;
   top: 0;
-  left: -400px;
   width: 350px;
   height: 100vh;
-  background: white;
   padding: 20px;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
   z-index: 9999;
   transition: left 0.55s ease;
+  left: -500px;
+  background-color: white;
 }
 
 /* When Open */
@@ -179,6 +179,41 @@ img.img-fluid.user-img {
 
 .position-absolute .top-0 .image {
   right: 0 !important;
+}
+
+.msg-scond-prson {
+  background-color: #424242;
+  color: white;
+  border-radius: 27px;
+  padding: 10px 20px;
+  line-height: normal;
+  margin: 0;
+  width: 60%;
+
+}
+
+.msg-user {
+  background-color: #116AD1;
+  color: white;
+  border-radius: 27px;
+  padding: 10px 20px;
+  line-height: normal;
+  width: 60%;
+  margin-left: auto;
+}
+
+.position-relative .send-input {
+  width: 95% !important;
+}
+
+.send-img {
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  right: 12px;
+  z-index: 111111;
+  top: 20%;
+  cursor: pointer;
 }
 
 /* home section stylign end here - -- -- -- -- -- */
