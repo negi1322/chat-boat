@@ -77,8 +77,8 @@ const SignUp = () => {
     <>
       <div className="signup-container d-flex align-items-center h-100 my-auto bg-white">
         <div className="container">
-          <div className="row align-items-center p-3 rounded-5 justify-content-around ">
-            <div className="col-md-5 col-12">
+          <div className=" d-flex btn align-items-center p-3 rounded-5 justify-content-around ">
+            <div className="col-md-6 col-12">
               <img src={IMAGES.SIGNUP} alt="signup" className="img-fluid" />
             </div>
 
@@ -146,10 +146,9 @@ const SignUp = () => {
                         <InputNumber
                           style={{ width: "fit-content" }}
                           placeholder="Enter age"
-                          max={999} // Allows only 3 digits
-                          controls={false} // Hide arrows
-                          stringMode // Prevents auto-formatting
-                        />
+                          max={999}
+                          controls={false}
+                          stringMode />
                       </Form.Item>
                     </div>
 

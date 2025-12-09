@@ -28,8 +28,10 @@ const User = () => {
                             <h6 className="mb-0 text-center" style={{ fontSize: "13px" }}>Users</h6>
                         </div>
                     </div>
+                    
+                    <div className="col-md-11 border border-1 ">
 
-
+                    </div>
                 </div>
             </div>
         </>
