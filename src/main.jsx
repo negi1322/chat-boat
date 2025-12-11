@@ -14,6 +14,8 @@ import EditProfile from "./EditProfile";
 import Users from "./Users";
 import User from "./User";
 import Chat from "./Chat";
+import "aos/dist/aos.css";
+
 
 const PrivateRoute = ({ children }) => {
   const uid = localStorage.getItem("uid");
@@ -72,14 +74,17 @@ const router = createBrowserRouter([
         <Users />
       </PrivateRoute>
     ),
-  }, {
+  },
+  {
     path: "/user/:id",
     element: (
       <PrivateRoute>
         <User />
       </PrivateRoute>
     ),
-  }, , {
+  },
+  ,
+  {
     path: "/chat/:id",
     element: (
       <PrivateRoute>
