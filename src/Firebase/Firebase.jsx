@@ -4,6 +4,7 @@ import { createContext, useContext } from "react";
 import { getDatabase, set, ref } from "firebase/database";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 
 // Firebase configkeys
@@ -23,8 +24,7 @@ export const FirebaseContext = createContext(null);
 export const firebaseAuth = getAuth(app);
 export const firebaseDatabase = getDatabase(app);
 export const firestore = getFirestore(app);
-
-
+export const storage = getStorage(app)
 // coustome hook to use firebase
 export const UseFirebase = () => useContext(FirebaseContext);
 

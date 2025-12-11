@@ -1,15 +1,32 @@
 import { toast } from "react-toastify";
-import { firebaseAuth, firestore } from "../Firebase/Firebase";
+import { firebaseAuth, firestore, storage } from "../Firebase/Firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { Button, Form, Input, InputNumber, Select } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  message,
+  Upload,
+} from "antd";
 import IMAGES from "../assets/images";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { set } from "firebase/database";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect, useState } from "react";
+import { UploadOutlined } from "@ant-design/icons";
 
 const SignUp = () => {
+  const [image, setImage] = useState(null);
+  useEffect(() => {
+    AOS.init({ duration: 1500 });
+  }, []);
+
   const googleProvider = new GoogleAuthProvider();
   googleProvider.setCustomParameters({
     prompt: "select_account",
@@ -65,7 +82,10 @@ const SignUp = () => {
 
     try {
       await setDoc(doc(firestore, "users", uid), {
-        values,
+        values: {
+          ...values,
+          image: image,
+        },
       });
       navigate("/login");
     } catch (err) {
@@ -73,31 +93,51 @@ const SignUp = () => {
     }
   };
 
+  const props = {
+    listType: "picture",
+    beforeUpload(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          setImage(reader.result);
+          resolve(false);
+        };
+      });
+    },
+    showUploadList: false,
+  };
+
   return (
     <>
-      <div className="signup-container d-flex align-items-center h-100 my-auto bg-white">
+      <div className="signup-contaier">
         <div className="container">
-          <div className=" d-flex btn align-items-center p-3 rounded-5 justify-content-around ">
-            <div className="col-md-6 col-12">
+          <div className="row align-items-center">
+            <div className="col-md-6 col-12 " data-aos="fade-down-right">
               <img src={IMAGES.SIGNUP} alt="signup" className="img-fluid" />
             </div>
 
-            <div className="col-md-6 col-12 ">
-              <h1 className="text-center my-3">Create Account</h1>
+            <div className="col-md-6 col-12 " data-aos="flip-left">
+              <h1 className="text-center my-3 fw-bolder">Create Account</h1>
               <StyledWrapper>
                 <Form form={form} onFinish={onFinish}>
                   <div className="mt-2">
                     <Form.Item
+                      className="signup-label"
                       label="Name"
                       name="name"
                       rules={[{ required: true, message: "Enter your name" }]}
                     >
-                      <Input placeholder="Enter name" />
+                      <Input
+                        placeholder="Enter name"
+                        className="signup-input"
+                      />
                     </Form.Item>
                   </div>
 
                   <div className="mt-2">
                     <Form.Item
+                      className="signup-label"
                       label="Email"
                       name="email"
                       rules={[
@@ -105,33 +145,37 @@ const SignUp = () => {
                         { type: "email", message: "Enter a valid email" },
                       ]}
                     >
-                      <Input placeholder="Enter email" />
+                      <Input
+                        placeholder="Enter email"
+                        className="signup-input"
+                      />
                     </Form.Item>
                   </div>
 
+                  <div>
+                    <Form.Item
+                      className="signup-label"
+                      label="Contact"
+                      name="contact"
+                      rules={[
+                        { required: true, message: "Enter contact number" },
+                      ]}
+                    >
+                      <InputNumber
+                        className="p-2 w-100 rounded-pill"
+                        placeholder="Enter number"
+                        maxLength={10}
+                        controls={false}
+                      />
+                    </Form.Item>
+                  </div>
                   <div
-                    className="d-grid gap-3"
-                    style={{ gridTemplateColumns: "1fr 1fr 1fr" }}
+                    className="d-grid gap-3 align"
+                    style={{ gridTemplateColumns: "1fr 1fr" }}
                   >
                     <div>
                       <Form.Item
-                        label="Contact"
-                        name="contact"
-                        rules={[
-                          { required: true, message: "Enter contact number" },
-                        ]}
-                      >
-                        <InputNumber
-                          style={{ width: "100%" }}
-                          placeholder="Enter number"
-                          maxLength={10}
-                          controls={false}
-                        />
-                      </Form.Item>
-                    </div>
-
-                    <div>
-                      <Form.Item
+                        className="signup-label"
                         label="Age"
                         name="age"
                         rules={[
@@ -144,21 +188,27 @@ const SignUp = () => {
                         ]}
                       >
                         <InputNumber
+                          className="p-1 rounded-pill"
                           style={{ width: "fit-content" }}
                           placeholder="Enter age"
                           max={999}
                           controls={false}
-                          stringMode />
+                          stringMode
+                        />
                       </Form.Item>
                     </div>
 
                     <div>
                       <Form.Item
+                        className="signup-label"
                         label="Gender"
                         name="gender"
                         rules={[{ required: true, message: "Select gender" }]}
                       >
-                        <Select placeholder="Select gender">
+                        <Select
+                          placeholder="Select gender"
+                          className="p-2 rounded-pill"
+                        >
                           <Select.Option value="male">Male</Select.Option>
                           <Select.Option value="female">Female</Select.Option>
                           <Select.Option value="other">Other</Select.Option>
@@ -168,6 +218,7 @@ const SignUp = () => {
                   </div>
 
                   <Form.Item
+                    className="signup-label"
                     label="Password"
                     name="password"
                     rules={[
@@ -178,10 +229,22 @@ const SignUp = () => {
                       },
                     ]}
                   >
-                    <Input.Password placeholder="Set Your Password" />
+                    <Input.Password
+                      placeholder="Set Your Password"
+                      className="signup-input"
+                    />
                   </Form.Item>
 
-                  <Form.Item label={null}>
+                  <div className="d-flex gap-4 mb-2">
+                    <label htmlFor="upload" className="signup-label mb-2">
+                      Upload Image
+                    </label>
+                    <Upload {...props}>
+                      <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                    </Upload>
+                  </div>
+
+                  <Form.Item label={null} className="signup-label">
                     <Button
                       className="mt-1 button-submit"
                       type="dark"

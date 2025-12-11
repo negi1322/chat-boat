@@ -9,11 +9,11 @@ import {
   getDocs,
   doc,
   getDoc,
-  setDoc
+  setDoc,
 } from "firebase/firestore";
 
 import Input from "antd/es/input/Input";
-import { Button, Upload } from "antd";
+import { Button, Upload, Flex, Modal } from "antd";
 import IMAGES from "./assets/images";
 
 const Home = () => {
@@ -25,7 +25,8 @@ const Home = () => {
   const [message, setMessages] = useState({ messages: [] });
   const [sendMsg, setSendMsg] = useState("");
   const [currentUser, setCurrentUser] = useState([]);
-
+  const [open, setOpen] = useState(false);
+  const [openResponsive, setOpenResponsive] = useState(false);
   const navigate = useNavigate();
   const id = localStorage.getItem("uid");
   const { id: uidUrl } = useParams();
@@ -38,8 +39,7 @@ const Home = () => {
     }
   }, [message]);
 
-
-  // Run when uid url will be available 
+  // Run when uid url will be available
   useEffect(() => {
     if (!uidUrl) return;
     const docRef = doc(firestore, "users", id, "chat", uidUrl);
@@ -53,7 +53,6 @@ const Home = () => {
 
     return () => unsub();
   }, [uidUrl]);
-
 
   const getCurrentUser = async () => {
     try {
@@ -75,12 +74,10 @@ const Home = () => {
 
       setUserData(userData);
       setCurrentUser(chatList);
-
     } catch (err) {
       console.log("Error fetching user + chat:", err);
     }
   };
-
 
   const getUsers = async () => {
     try {
@@ -89,7 +86,7 @@ const Home = () => {
 
       const allUsers = snapshot.docs.map((d) => ({
         id: d.id,
-        ...d.data()
+        ...d.data(),
       }));
 
       setData(allUsers);
@@ -97,7 +94,6 @@ const Home = () => {
       console.log(err);
     }
   };
-
 
   //  Set the messages in the firesote
   const selectChatUser = async (otherUser) => {
@@ -114,12 +110,12 @@ const Home = () => {
         {
           values: {
             uidData: otherUser.values,
-            uid: id
+            uid: id,
           },
           messages: arrayUnion({
             send: userMsg,
-            time: Date.now()
-          })
+            time: Date.now(),
+          }),
         },
         { merge: true }
       );
@@ -129,22 +125,19 @@ const Home = () => {
         {
           values: {
             uidData: user,
-            uid: otherUserId
+            uid: otherUserId,
           },
           messages: arrayUnion({
             recieved: userMsg,
-            time: Date.now()
-          })
+            time: Date.now(),
+          }),
         },
         { merge: true }
       );
-
-
     } catch (err) {
       console.log("send error:", err);
     }
-  }
-
+  };
 
   const formatTime = (ms) => {
     const d = new Date(ms);
@@ -153,12 +146,12 @@ const Home = () => {
     if (hours > 12) hours -= 12;
     if (hours === 0) hours = 12;
     return `${hours}.${minutes.toString().padStart(2, "0")}`;
-  }
+  };
   return (
     <>
-      <div className="container-xxl">
-        <div className="row">
-          <div className="col-md-1 col-12 cont-1 d-flex align-items-center flex-row flex-md-column  justify-content-between justify-content-md-start">
+      <div className="container-fluid">
+        <div className="row ">
+          <div className=" d-none d-md-block border border-1 col-md-1 col-12 cont-1 d-flex align-items-center flex-row flex-md-column  justify-content-between justify-content-md-start">
             <div className="d-flex flex-column align-items-center ">
               <div
                 onClick={() => navigate(`/edit/${id}`, { state: user })}
@@ -170,7 +163,10 @@ const Home = () => {
                   className="img-fluid rounded-circle"
                 />
               </div>
-              <h6 className="mb-0 mt-1 text-center" style={{ fontSize: "13px" }}>
+              <h6
+                className="mb-0 mt-1 text-center"
+                style={{ fontSize: "13px" }}
+              >
                 {user?.name}
               </h6>
             </div>
@@ -186,20 +182,128 @@ const Home = () => {
                 Users
               </h6>
             </div>
-
-            <div className="d-block d-md-none pointer" onClick={() => setIsChatSidebarOpen(!false)}>
-              <img src={IMAGES.CHAT} alt="" className="img-fluid" />
-            </div>
           </div>
 
           {/* USERS LIST */}
-          <div className="col-md-5">
-            <div className="d-none d-md-block mt-4">
-              <div className="d-flex justify-content-between mb-2 pe-2">
-                <h5 className="m-0 ms-tag fs-3 fw-bold mt-1">Messages</h5>
+          <div className="col-md-5 border border-1 ">
+            <div className="my-2">
+              <div className="d-flex justify-content-between align-items-center">
+                <h5 className="m-0 ms-tag fs-md-3 fs-5 fw-bold mt-1 text-primary">
+                  Messaanger
+                </h5>
+
+                <Flex
+                  vertical
+                  gap="middle"
+                  align="flex-start"
+                  className=" d-block d-md-none"
+                >
+                  {/* Basic */}
+                  <Modal
+                    title="Modal 1000px width"
+                    centered
+                    open={open}
+                    onOk={() => setOpen(false)}
+                    onCancel={() => setOpen(false)}
+                    width={1000}
+                  ></Modal>
+
+                  {/* Responsive */}
+                  <span
+                    onClick={() => setOpenResponsive(true)}
+                    className="pointer ms-logo d-md-none d-block"
+                  >
+                    <img src={IMAGES.CHAT} alt="" className="img-fluid" />
+                  </span>
+
+                  <Modal
+                    centered
+                    open={openResponsive}
+                    onOk={() => setOpenResponsive(false)}
+                    onCancel={() => setOpenResponsive(false)}
+                    width={{
+                      xs: "90%",
+                      sm: "80%",
+                      md: "70%",
+                      lg: "60%",
+                      xl: "50%",
+                      xxl: "40%",
+                    }}
+                  >
+                    <div className="mt-3">
+                      <input
+                        type="text"
+                        placeholder="Search here..."
+                        className="w-100 rounded-5 border border-1 brown"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        style={{
+                          border: "1px solid #ccc",
+                          height: "45px",
+                          paddingLeft: "12px",
+                          boxShadow: "unset",
+                        }}
+                      />
+                    </div>
+
+                    {data.map((item, idx) =>
+                      item?.id === localStorage.getItem("uid") ? null : (
+                        <div
+                          onClick={() => navigate(`/chat/${item?.id}`)}
+                          className="user-container brown pointer border-bottom  border-1"
+                          key={idx}
+                        >
+                          <div className="messangers my-2 align-items-center">
+                            <div className="image">
+                              <img
+                                src={item?.values?.image}
+                                alt="user-image"
+                                className="img-fluid rounded-circle"
+                              />
+                            </div>
+
+                            <div className="d-flex justify-content-between align-items-center ">
+                              <span>
+                                <p className=" m-0 fw-semibold user-msg">
+                                  {item?.values?.name}
+                                </p>
+                                <p className="m-0  text-secondary fw-medium user-msg">
+                                  Last message preview...
+                                </p>
+                              </span>
+
+                              <span className="d-flex flex-column justify-content-center ">
+                                <h6 className="m-1 text-secondary fw-semibold user-msg">
+                                  09:15AM
+                                </h6>
+                                <p className="ms-btn mb-0">4</p>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </Modal>
+                </Flex>
+
+                <div className="d-flex flex-column align-items-center d-md-none d-block ">
+                  <div
+                    onClick={() => navigate(`/edit/${id}`, { state: user })}
+                    className="iiii mt-0 mt-md-5 border-0"
+                  >
+                    <img
+                      src={user?.image}
+                      alt="user-image"
+                      className="img-fluid rounded-circle "
+                    />
+                  </div>
+                  <h6 className="mb-0 text-center" style={{ fontSize: "10px" }}>
+                    {user?.name}
+                  </h6>
+                </div>
               </div>
 
-              <div className="mt-3">
+              <div className="mt-3 d-none d-md-block">
                 <input
                   type="text"
                   placeholder="Search here..."
@@ -210,49 +314,53 @@ const Home = () => {
                     border: "1px solid #ccc",
                     height: "45px",
                     paddingLeft: "12px",
-                    boxShadow: "unset"
+                    boxShadow: "unset",
                   }}
                 />
               </div>
 
-              {data.map((item, idx) => (
-                item?.id === localStorage.getItem("uid") ? null :
-                  <div
-                    onClick={() => navigate(`/chat/${item?.id}`)}
-                    className="user-container brown pointer"
-                    key={idx}
-                  >
-                    <div className="messangers mt-2 align-items-center">
-                      <div className="image">
-                        <img
-                          src={item?.values?.image}
-                          alt="user-image"
-                          className="img-fluid rounded-circle"
-                        />
-                      </div>
+              <div className="user-container-scroll d-none d-md-block">
+                {data.map((item, idx) =>
+                  item?.id === localStorage.getItem("uid") ? null : (
+                    <div
+                      onClick={() => navigate(`/chat/${item?.id}`)}
+                      className="user-container brown pointer border-bottom  border-1 d-none d-md-block"
+                      key={idx}
+                    >
+                      <div className="messangers my-2 align-items-center">
+                        <div className="image">
+                          <img
+                            src={item?.values?.image}
+                            alt="user-image"
+                            className="img-fluid rounded-circle"
+                          />
+                        </div>
 
-                      <div className="d-flex justify-content-between align-items-center w-100">
-                        <span className="w-75">
-                          <h5 className="mb-1 fs-6">{item?.values?.name}</h5>
-                          <p className="m-0 one-line w-75 text-secondary">
-                            Last message preview...
-                          </p>
-                        </span>
+                        <div className="d-flex justify-content-between align-items-center ">
+                          <span className="w-100">
+                            <h5 className="fs-6 m-0 fw-semibold">
+                              {item?.values?.name}
+                            </h5>
+                            <p className="m-0 one-line w-100 text-secondary fw-medium">
+                              Last message preview...
+                            </p>
+                          </span>
 
-                        <span className="d-flex flex-column justify-content-center ">
-                          <h6
-                            className="m-1 text-secondary fw-semibold"
-                            style={{ fontSize: "14px" }}
-                          >
-                            09:15AM
-                          </h6>
-                          <p className="ms-btn mb-0">4</p>
-                        </span>
+                          <span className="d-flex flex-column justify-content-center ">
+                            <h6
+                              className="m-1 text-secondary fw-semibold"
+                              style={{ fontSize: "14px" }}
+                            >
+                              09:15AM
+                            </h6>
+                            <p className="ms-btn mb-0">4</p>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-              ))}
+                  )
+                )}
+              </div>
             </div>
           </div>
 
@@ -260,11 +368,13 @@ const Home = () => {
 
           {data.map((item, idx) =>
             uidUrl === item?.id ? (
-              <div className=" col-md-6 border-2 position-relative chat-section" key={idx} u>
-                <div className="container-fluid">
+              <div
+                className=" col-md-6 border-2 position-relative chat-section"
+                key={idx}
+              >
+                <div className="container-fluid p-0">
                   <div className="row gap-2">
-
-                    <div className="col-12 py-2 d-flex justify-content-around align-items-center brown d-none d-md-block">
+                    <div className=" border-bottom border-1 col-12 py-2 d-flex justify-content-around align-items-center brown d-none d-md-block">
                       <div className="mt-2 d-flex gap-2 align-items-center">
                         <div className="online-user-image">
                           <img
@@ -280,7 +390,6 @@ const Home = () => {
                               {item.values?.name}
                             </p>
                             <p className="mb-0 online">Online</p>
-
                           </div>
                           <p className="mb-0 fst-normal text-secondary">
                             {item.values?.email}
@@ -290,34 +399,41 @@ const Home = () => {
                     </div>
 
                     {/* MESSAGES LIST */}
-                    <div className="col-12 coooot position-relative  pt-3" ref={chatRef}>
+                    <div
+                      className="col-12 coooot position-relative  pt-3"
+                      ref={chatRef}
+                    >
                       {message?.messages?.map((value, index) => (
                         <div key={index} className="row p-0 m-0">
                           {value?.recieved && (
                             <div className="col-6 mb-1">
-                              <p className=" msg-scond-prson  d-flex flex-column gap-1">{value.recieved}
-                                <span className="time">{formatTime(value?.time)}</span>
+                              <p className=" msg-scond-prson  d-flex flex-column gap-1">
+                                {value.recieved}
+                                <span className="time">
+                                  {formatTime(value?.time)}
+                                </span>
                               </p>
                             </div>
                           )}
                           {value?.send && (
                             <div className="row justify-content-end p-0 m-0">
                               <span className="col-6 mb-1 right">
-                                <p className="msg-user d-flex flex-column justify-content-end">{value.send}
-                                  <span className="time">{formatTime(value?.time)}</span></p>
+                                <p className="msg-user d-flex flex-column justify-content-end">
+                                  {value.send}
+                                  <span className="time">
+                                    {formatTime(value?.time)}
+                                  </span>
+                                </p>
                               </span>
                             </div>
                           )}
                         </div>
-
                       ))}
-
                     </div>
-
                   </div>
                 </div>
                 {/* MESSAGE INPUT */}
-                <div className="chat-section-input">
+                <div className="chat-section-input ">
                   <div className="d-flex justify-content-center  align-items-center">
                     <Upload>
                       <Button className="border-0">
@@ -350,54 +466,55 @@ const Home = () => {
               </div>
             ) : null
           )}
-          < div className={` d-block d-md-none chat-sidebar m-0 ${isChatSidebarOpen ? "open" : ""}`}>
-            <div className="d-flex justify-content-end">
+          <div
+            className={` d-block d-md-none chat-sidebar m-0 ${
+              isChatSidebarOpen ? "open" : ""
+            }`}
+          >
+            <div className="d-flex justify-content-between">
+              <h5 className="m-0 ms-tag fs-3 fw-bold mt-1 text-primary">
+                Messaanger
+              </h5>
               <button
-                className="btn btn-sm btn-close border border-1 border-dark p-2 "
+                className="bi bi-x-circle btn fs-2 fw-bolder "
                 onClick={() => setIsChatSidebarOpen(false)}
               ></button>
             </div>
-            {data.map((item, idx) => (
-              <div
-                onClick={() => navigate(`/chat/${item?.id}`)}
-                className="user-container brown pointer brown"
-                key={idx}
-              >
-                <div className="messangers align-items-center " >
-                  <div className="image">
-                    <img
-                      src={item?.values?.image}
-                      alt="user-image"
-                      className="img-fluid rounded-circle"
-                    />
-                  </div>
-
-                  <div className="d-flex justify-content-between align-items-center ">
-                    <span>
-                      <h5 className="mb-1 fs-6">{item?.values?.name}</h5>
-                      <p className="m-0 one-line w-75 text-secondary">
-                        Last message preview...
-                      </p>
-                    </span>
-
-                    <span className="d-flex flex-column justify-content-center">
-                      <h6
-                        className="m-1 text-secondary fw-semibold"
-                        style={{ fontSize: "14px" }}
-                      >
-                        09:15AM
-                      </h6>
-                      <p className="ms-btn mb-0">4</p>
-                    </span>
-                  </div>
+            <div className=" d-block d-md-none d-flex flex-column justify-content-start gap-4 my-4">
+              <div className="d-flex flex-column align-items-start ">
+                <div
+                  onClick={() => navigate(`/edit/${id}`, { state: user })}
+                  className="iiii mt-0 mt-md-5"
+                >
+                  <img
+                    src={user?.image}
+                    alt="user-image"
+                    className="img-fluid rounded-circle"
+                  />
                 </div>
+                <h6
+                  className="mb-0 mt-1 text-center"
+                  style={{ fontSize: "13px" }}
+                >
+                  {user?.name}
+                </h6>
               </div>
-            ))}
-          </div >
 
-
+              <div className="d-flex flex-column align-items-start mt-0 mt-md-5 ">
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigate("/users")}
+                >
+                  <img src={IMAGES.CONTACT} alt="" className="img-fluid" />
+                </div>
+                <h6 className="mt-1 text-center" style={{ fontSize: "13px" }}>
+                  Users
+                </h6>
+              </div>
+            </div>
+          </div>
         </div>
-      </div >
+      </div>
     </>
   );
 };

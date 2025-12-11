@@ -33,15 +33,63 @@ div#root {
   height: 100vh;
   place-content: center;
 }
+.signup-contaier {
+ padding: 20px 5px;
+  place-content: center;
+  height: 100%;
+}
+.signup-input{
+  padding: 10px;
+  border-radius: 20px;
+}
 
+.signup-input::placeholder{
+  font-weight: 700;
+  color: #adadad;
+};
+
+.ant-input-number-input::placeholder{
+  font-weight: 700 !important;
+  color: #adadad;
+}
+
+input#contact::placeholder{
+  font-weight: 700 !important;
+  color: #adadad; 
+}
+input#age::placeholder{
+  font-weight: 700 !important;
+  color: #adadad; 
+}
+
+input#gender::placeholder{
+  font-weight: 700 !important;
+  color: #adadad; 
+}
+input#password::placeholder{
+  font-weight: 700 !important;
+  color: #adadad; 
+}
+:where(.css-dev-only-do-not-override-3obk1w).ant-form-item .ant-form-item-label >label.ant-form-item-required::before {
+all: unset;
+}
+
+.signup-label{
+  font-size: 16px !important;
+  color: #151717;
+  font-weight: 600;
+}
 /* home section stylign start here - -- -- -- -- -- */
 
 .messangers {
   background-color: #F8F8F8;
-  display: flex;
-  gap: 12px;
-  padding: 5px;
-  border-radius: 12px;
+display: grid;
+transition: transform 0.4s ease-in-out;
+grid-template-columns: .2fr 1fr ;
+}
+
+.messangers:hover{
+    transform: scale(1.05);
 }
 
 
@@ -63,10 +111,28 @@ img.img-message.img-fluid {
   place-self: center;
   background-color: #116AD1;
   color: white;
+  font-size: 12px !important;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
+button.ant-modal-close {
+  display: none;
+}
+.user-container-scroll{
+  overflow: scroll;
+  scrollbar-width: none;
+  height:85vh;
+
+}
+.ant-modal-body {
+  height: 60vh;
+  overflow: scroll;
+  scrollbar-width: none;
+  margin: auto;
+}
+
 
 .ms-tag {
   color: #424242;
@@ -79,23 +145,41 @@ img.img-message.img-fluid {
   margin: 0;
   overflow: hidden;
   position: relative;
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   object-fit: cover;
   cursor: pointer;
 }
-
-.image {
+.user-images{
   border: 1px solid gainsboro;
   border-radius: 50%;
   padding: 0;
   margin: 0;
   overflow: hidden;
   position: relative;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+span.pointer.ms-logo {
+  width: 48px;
+  position: absolute;
+  height: 44px;
+  top: 2px;
+  left: 54%;
+}
+
+.image {
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
   width: 60px;
   height: 60px;
   object-fit: cover;
   cursor: pointer;
+  margin-bottom: 4px;
 }
 
 .online-user-image {
@@ -129,7 +213,14 @@ img.img-fluid.rounded-circle {
 .one-line {
   white-space: nowrap;
   overflow: hidden;
+  line-height: normal;
+  margin: 0;
   text-overflow: ellipsis;
+}
+
+
+.user-msg{
+  font-size: 12px !important;
 }
 
 .cont-1 {
@@ -147,7 +238,7 @@ img.img-fluid.rounded-circle {
   overflow-y: auto;
   position: fixed;
   top: 0;
-  width: 350px;
+  width: 320px;
   height: 100vh;
   padding: 20px;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
@@ -158,8 +249,10 @@ img.img-fluid.rounded-circle {
 }
 
 .chat-sidebar.open {
+  border: 1px solid rgb(206, 194, 194);
   left: 0 !important;
-  width: 100% !important;
+  width: 60% !important;
+  border-radius: 1px 21px 21px 1px ;
 }
 
 .icon-box {
@@ -228,7 +321,6 @@ span.col-6.mb-1.right {
 /* Edit section stylign start here ---------- */
 
 .edit-image {
-  border: 1px solid;
   border-radius: 50%;
   padding: 0;
   margin: 0;
@@ -284,7 +376,7 @@ span.col-6.mb-1.right {
 }
 
 /* Medaia query for mobile responsive */
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 400px) {
   div#root {
     height: 100% !important;
     background-color: white;
@@ -301,17 +393,38 @@ span.col-6.mb-1.right {
     aspect-ratio: 1;
     object-fit: contain;
   }
-
-}
-
-
-@media(width<400px) {
+  .image {
+    
+    width: 45px;
+    height: 45px;
+   margin : 7px;
+  }
   .coooot {
-    height: 72vh !important;
+    height: 76vh !important;
+  }
+
+  .ms-btn {
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    place-self: center;
+    background-color: #116AD1;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px !important;
+  }
+  .brown::placeholder {
+    padding-left: 20px;
   }
 }
 
-
+@media (width>=400px){
+  .coooot {
+    height: 84vh !important;
+  }
+}
 @media(width>=600px) {
   .chat-section {
     height: 86vh;
@@ -347,7 +460,7 @@ span.time {
 }
 
 .chat-section {
-  height: 100vh;
+  height: 93vh;
 }
 
 .chat-section-input {
