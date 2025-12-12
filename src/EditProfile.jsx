@@ -13,7 +13,9 @@ const EditProfile = () => {
   const { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
-  console.log("state is ", state);
+
+
+
   const props = {
     listType: "picture",
     beforeUpload(file) {

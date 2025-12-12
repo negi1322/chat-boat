@@ -84,7 +84,7 @@ const SignUp = () => {
       await setDoc(doc(firestore, "users", uid), {
         values: {
           ...values,
-          image: image,
+          // image: image,
         },
       });
       navigate("/login");
@@ -235,14 +235,14 @@ const SignUp = () => {
                     />
                   </Form.Item>
 
-                  <div className="d-flex gap-4 mb-2">
+                  {/* <div className="d-flex gap-4 mb-2">
                     <label htmlFor="upload" className="signup-label mb-2">
                       Upload Image
                     </label>
                     <Upload {...props}>
                       <Button icon={<UploadOutlined />}>Click to Upload</Button>
                     </Upload>
-                  </div>
+                  </div> */}
 
                   <Form.Item label={null} className="signup-label">
                     <Button

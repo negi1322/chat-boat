@@ -1,17 +1,20 @@
-import { Query, getDocs, collection } from "firebase/firestore";
+import { Query, getDocs, collection, doc, setDoc } from "firebase/firestore";
 import { firestore } from "./Firebase/Firebase";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import IMAGES from "./assets/images";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Users = () => {
   const [user, setUserData] = useState([]);
   const [search, setSearch] = useState("");
-
   const userData = JSON.parse(localStorage.getItem("user"));
   const id = localStorage.getItem("uid");
   const navigate = useNavigate();
+  const { state } = useLocation();
+
+  console.log("state is ", state)
+
 
   useEffect(() => {
     getData();
@@ -35,6 +38,23 @@ const Users = () => {
   const filteredUsers = user.filter((item) =>
     item?.values?.name?.toLowerCase().includes(search.toLowerCase())
   );
+
+
+  const sendRequest = async (sender) => {
+    const otherUserId = sender?.id;
+    const myRef = doc(firestore, "users", otherUserId, "notification", id);
+    try {
+      await setDoc(
+        myRef, {
+        values: {
+          ...state, id,
+        }
+      });
+      toast.success("Request message sent!")
+    } catch (err) {
+      toast.error("request not send try later")
+    }
+  }
 
   return (
     <>
@@ -112,27 +132,16 @@ const Users = () => {
                       </div>
 
                       <div>
-                        <h6 className="mt-2 text-secondary fw-bold">
+                        <h6 className="mt-2 text-secondary user-mg fw-bold">
                           {index?.values?.name}
                         </h6>
-                        <h6 className="mt-2 text-secondary fw-bold">
+                        <h6 className="mt-2 text-secondary fw-bold user-msg">
                           {index?.values?.email}
                         </h6>
                       </div>
+                      <i onClick={() => sendRequest(index)} className="text-primary bi bi-person-check fs-2 pointer sent-icon position-absolute"></i>
                     </div>
 
-                    <div className="me-3 d-flex align-items-center gap-5">
-                      <div>
-                        <img
-                          src={IMAGES.CHAT}
-                          alt=""
-                          className="img-fluid pointer"
-                        />
-                      </div>
-                      <div className="pointer">
-                        <i className="text-primary bi bi-person-plus-fill fs-2"></i>
-                      </div>
-                    </div>
                   </div>
                 ))
               ) : (

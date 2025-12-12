@@ -33,63 +33,70 @@ div#root {
   height: 100vh;
   place-content: center;
 }
+
 .signup-contaier {
- padding: 20px 5px;
+  padding: 20px 5px;
   place-content: center;
   height: 100%;
 }
-.signup-input{
+
+.signup-input {
   padding: 10px;
   border-radius: 20px;
 }
 
-.signup-input::placeholder{
+.signup-input::placeholder {
   font-weight: 700;
   color: #adadad;
-};
+}
 
-.ant-input-number-input::placeholder{
+;
+
+.ant-input-number-input::placeholder {
   font-weight: 700 !important;
   color: #adadad;
 }
 
-input#contact::placeholder{
+input#contact::placeholder {
   font-weight: 700 !important;
-  color: #adadad; 
-}
-input#age::placeholder{
-  font-weight: 700 !important;
-  color: #adadad; 
+  color: #adadad;
 }
 
-input#gender::placeholder{
+input#age::placeholder {
   font-weight: 700 !important;
-  color: #adadad; 
-}
-input#password::placeholder{
-  font-weight: 700 !important;
-  color: #adadad; 
-}
-:where(.css-dev-only-do-not-override-3obk1w).ant-form-item .ant-form-item-label >label.ant-form-item-required::before {
-all: unset;
+  color: #adadad;
 }
 
-.signup-label{
+input#gender::placeholder {
+  font-weight: 700 !important;
+  color: #adadad;
+}
+
+input#password::placeholder {
+  font-weight: 700 !important;
+  color: #adadad;
+}
+
+:where(.css-dev-only-do-not-override-3obk1w).ant-form-item .ant-form-item-label>label.ant-form-item-required::before {
+  all: unset;
+}
+
+.signup-label {
   font-size: 16px !important;
   color: #151717;
   font-weight: 600;
 }
+
 /* home section stylign start here - -- -- -- -- -- */
 
 .messangers {
-  background-color: #F8F8F8;
-display: grid;
-transition: transform 0.4s ease-in-out;
-grid-template-columns: .2fr 1fr ;
+  display: grid;
+  transition: transform 0.4s ease-in-out;
+  grid-template-columns: .2fr 1fr;
 }
 
-.messangers:hover{
-    transform: scale(1.05);
+.messangers:hover {
+  transform: scale(1.05);
 }
 
 
@@ -120,12 +127,14 @@ img.img-message.img-fluid {
 button.ant-modal-close {
   display: none;
 }
-.user-container-scroll{
+
+.user-container-scroll {
   overflow: scroll;
   scrollbar-width: none;
-  height:85vh;
+  height: 80vh;
 
 }
+
 .ant-modal-body {
   height: 60vh;
   overflow: scroll;
@@ -150,7 +159,8 @@ button.ant-modal-close {
   object-fit: cover;
   cursor: pointer;
 }
-.user-images{
+
+.user-images {
   border: 1px solid gainsboro;
   border-radius: 50%;
   padding: 0;
@@ -175,11 +185,11 @@ span.pointer.ms-logo {
   border-radius: 50%;
   overflow: hidden;
   position: relative;
-  width: 60px;
-  height: 60px;
+  width: 56px;
+  height: 56px;
   object-fit: cover;
   cursor: pointer;
-  margin-bottom: 4px;
+  margin: auto;
 }
 
 .online-user-image {
@@ -207,7 +217,7 @@ span.pointer.ms-logo {
 img.img-fluid.rounded-circle {
   position: absolute;
   aspect-ratio: 1;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .one-line {
@@ -219,7 +229,7 @@ img.img-fluid.rounded-circle {
 }
 
 
-.user-msg{
+.user-msg {
   font-size: 12px !important;
 }
 
@@ -252,7 +262,7 @@ img.img-fluid.rounded-circle {
   border: 1px solid rgb(206, 194, 194);
   left: 0 !important;
   width: 60% !important;
-  border-radius: 1px 21px 21px 1px ;
+  border-radius: 1px 21px 21px 1px;
 }
 
 .icon-box {
@@ -375,15 +385,44 @@ span.col-6.mb-1.right {
   left: 2%;
 }
 
+
+/* USers section styling start */
+.sent-icon {
+  place-self: center;
+  position: absolute;
+  right: 34px;
+}
+
+.bi-gear::before {
+  content: "\f3e5";
+  font-size: 23px;
+  text-align: center;
+}
+
+
+
+/* USer section styling edn */
+
+/* Notification model styling start*/
+span.notifi-image {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.notifi-user-image {
+  position: absolute;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 /* Medaia query for mobile responsive */
 @media screen and (max-width: 400px) {
   div#root {
-    height: 100% !important;
     background-color: white;
-  }
-
-  .chat-section {
-    height: unset !important;
   }
 
   img.img-fluid.user-img {
@@ -393,14 +432,15 @@ span.col-6.mb-1.right {
     aspect-ratio: 1;
     object-fit: contain;
   }
+
   .image {
-    
     width: 45px;
     height: 45px;
-   margin : 7px;
+    margin: 7px;
   }
+
   .coooot {
-    height: 76vh !important;
+    height: 73vh !important;
   }
 
   .ms-btn {
@@ -415,23 +455,38 @@ span.col-6.mb-1.right {
     justify-content: center;
     font-size: 10px !important;
   }
+
   .brown::placeholder {
     padding-left: 20px;
   }
-}
 
-@media (width>=400px){
-  .coooot {
-    height: 84vh !important;
+  .user-images {
+    width: 50px;
+    height: 50px;
+  }
+
+  .chat-section {
+    height: 80vh !important;
   }
 }
+
+@media (width>=400px) {
+  .coooot {
+    height: 76vh !important;
+  }
+}
+
 @media(width>=600px) {
   .chat-section {
     height: 86vh;
   }
 
+  .user-msg {
+    font-size: 15px !important;
+  }
+
   .chat-section-input {
-    width: 50% !important;
+    width: 58% !important;
     margin-left: auto;
     position: fixed;
     z-index: 111;
@@ -440,6 +495,7 @@ span.col-6.mb-1.right {
     left: 0;
     right: 0;
     bottom: 10px;
+
   }
 
 }
@@ -460,7 +516,7 @@ span.time {
 }
 
 .chat-section {
-  height: 93vh;
+  height: 91vh;
 }
 
 .chat-section-input {

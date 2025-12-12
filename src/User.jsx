@@ -6,7 +6,6 @@ const User = () => {
     const navigate = useNavigate()
     const id = localStorage.getItem("uid")
     const user = JSON.parse(localStorage.getItem("user"))
-    console.log("state ", state)
     return (
         <>
             <div className="container-xxl">
