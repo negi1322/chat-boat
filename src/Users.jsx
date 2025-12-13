@@ -4,7 +4,9 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
+import IMAGES from "./assets/images";
+import { Card } from "antd";
+import Loader from "./Reused/Loader";
 const Users = () => {
   const [user, setUserData] = useState([]);
   const [search, setSearch] = useState("");
@@ -12,15 +14,13 @@ const Users = () => {
   const id = localStorage.getItem("uid");
   const navigate = useNavigate();
   const { state } = useLocation();
-
-  console.log("state is ", state)
-
-
+  const [loader, setLoader] = useState(false);
   useEffect(() => {
     getData();
   }, []);
 
   const getData = async () => {
+    setLoader(true);
     try {
       const ref = collection(firestore, "users");
       const snapshot = await getDocs(ref);
@@ -32,6 +32,8 @@ const Users = () => {
       setUserData(allUsers);
     } catch (err) {
       toast.error(err);
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -39,64 +41,39 @@ const Users = () => {
     item?.values?.name?.toLowerCase().includes(search.toLowerCase())
   );
 
-
   const sendRequest = async (sender) => {
     const otherUserId = sender?.id;
     const myRef = doc(firestore, "users", otherUserId, "notification", id);
     try {
-      await setDoc(
-        myRef, {
+      await setDoc(myRef, {
         values: {
-          ...state, id,
-        }
+          ...state,
+          id,
+        },
       });
-      toast.success("Request message sent!")
+      toast.success("Request message sent!");
     } catch (err) {
-      toast.error("request not send try later")
+      toast.error("request not send try later");
     }
-  }
+  };
 
+  if (loader) {
+    return (
+      <div className="d-flex justify-content-center align-items-center h-100 ">
+        <Loader />;
+      </div>
+    );
+  }
   return (
     <>
-      <div className="container-fluid">
-        <div className="row justify-content-between">
-          <div
-            className="col-md-1 cont-1 d-flex align-items-center flex-column  border d-none d-md-block"
-            style={{ height: "100vh" }}
-          >
-            <div className="d-flex flex-column align-items-center  bor">
-              <div
-                onClick={() => navigate(`/edit/${id}`, { state: user })}
-                className="iiii mt-5"
-              >
-                <img
-                  src={userData?.image}
-                  alt="user-image"
-                  className="img-fluid rounded-circle"
-                />
-              </div>
-              <h6
-                className="mb-0 mt-1 text-center"
-                style={{ fontSize: "13px" }}
-              >
-                {userData?.name}
-              </h6>
-            </div>
-
-            <div className="d-flex flex-column align-items-center mt-5 ">
-              <i
-                style={{ cursor: "pointer" }}
-                className="bi bi-person-circle fs-1 img-fluid rounded-circle "
-                onClick={() => navigate("/users")}
-              ></i>
-              <h6 className="mb-0 text-center" style={{ fontSize: "13px" }}>
-                Users
-              </h6>
-            </div>
+      <div className="container">
+        <div className="row justify-content-between align-items-center">
+          <div className="col-4 d-none d-md-block">
+            <img src={IMAGES.USERS} alt="" className="img-fluid" />
           </div>
 
-          <div className="col-md-11 col-12">
-            <div className="mt-3  ">
+          <div className=" col-md-8 col-12">
+            <div className="my-3  ">
               <input
                 type="text"
                 placeholder="Search Peoples..."
@@ -111,44 +88,40 @@ const Users = () => {
                 }}
               />
             </div>
-
-            <div className="mt-4">
-              {filteredUsers.length > 0 ? (
-                filteredUsers.map((index, id) => (
-                  <div
-                    key={id}
-                    className="d-flex mt-2 brown rounded-pill px-2 py-2 justify-content-between border"
-                  >
-                    <div className="w-100 d-flex gap-4 align-items-center">
-                      <div className="user-images d-flex">
+            <div className="grid-container">
+              <div key={id} className="wrapper">
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((index, id) => (
+                    <Card
+                      hoverable
+                      cover={
                         <img
-                          onClick={() =>
-                            navigate(`/user/${index?.id}`, { state: index })
-                          }
+                          draggable={false}
+                          alt=" No image set"
+                          className="img-fluid rounded-3 img-user mt-2"
                           src={index?.values?.image}
-                          alt="user-image"
-                          className="img-fluid rounded-circle"
                         />
+                      }
+                    >
+                      <div className="d-flex  align-items-center">
+                        <span className="fw-bolder">{index?.values?.name}</span>
+                        <i
+                          onClick={() => sendRequest(index)}
+                          className={`text-primary fs-4 pointer end-0 position-absolute me-2 ${
+                            localStorage.getItem("uid") === index?.id
+                              ? ""
+                              : "bi bi-person-plus-fill"
+                          }`}
+                        ></i>
                       </div>
-
-                      <div>
-                        <h6 className="mt-2 text-secondary user-mg fw-bold">
-                          {index?.values?.name}
-                        </h6>
-                        <h6 className="mt-2 text-secondary fw-bold user-msg">
-                          {index?.values?.email}
-                        </h6>
-                      </div>
-                      <i onClick={() => sendRequest(index)} className="text-primary bi bi-person-check fs-2 pointer sent-icon position-absolute"></i>
-                    </div>
-
+                    </Card>
+                  ))
+                ) : (
+                  <div className="d-flex justify-content-center align-items-center">
+                    <h1 className="my-5">NO USERS FOUND</h1>
                   </div>
-                ))
-              ) : (
-                <div className="d-flex justify-content-center align-items-center">
-                  <h1 className="my-5">NO USER FOUND</h1>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -17,6 +17,7 @@
     "aos": "^2.3.4",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
+    "browser-image-compression": "^2.0.2",
     "firebase": "^12.6.0",
     "formik": "^2.4.9",
     "icons": "^1.0.0",
@@ -26,7 +27,8 @@
     "react-router-dom": "^7.9.4",
     "react-search-box": "^3.0.0",
     "react-toastify": "^11.0.5",
-    "styled-components": "^6.1.19"
+    "styled-components": "^6.1.19",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
