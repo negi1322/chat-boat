@@ -8,6 +8,7 @@ import { firestore } from "../Firebase/Firebase";
 import { toast } from "react-toastify";
 import AOS from "aos";
 import { useEffect } from "react";
+import { Btn } from "../Reused/Reused";
 const Login = () => {
   useEffect(() => {
     AOS.init({ duration: 1500 });
@@ -16,11 +17,14 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const singup = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (password === "" || email === "") {
       toast.error("fill the fields");
+      setLoading(false);
       return;
     }
     try {
@@ -44,6 +48,8 @@ const Login = () => {
       });
     } catch (err) {
       console.log("Error:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -143,15 +149,16 @@ const Login = () => {
                   </div>
 
                   <div className="flex-row">
-                    <div>
-                      <input type="radio" />
-                      <label>Remember me </label>
-                    </div>
-                    <span className="span">Forgot password?</span>
+                    <span className="span fs-6 my-1 fw-bold">
+                      Forgot password?
+                    </span>
                   </div>
-                  <button onClick={singup} className="button-submit">
-                    Sign In
-                  </button>
+                  <Btn
+                    onClick={singup}
+                    isLoading={loading}
+                    text="Login"
+                    type="submit"
+                  />
                   <p className="p">
                     Don't have an account?{" "}
                     <span className="span" onClick={() => navigate("/")}>

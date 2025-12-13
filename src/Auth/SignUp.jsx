@@ -3,26 +3,17 @@ import { firebaseAuth, firestore, storage } from "../Firebase/Firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import {
-  Button,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  message,
-  Upload,
-} from "antd";
+import { Button, Form, Input, InputNumber, Select } from "antd";
 import IMAGES from "../assets/images";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { set } from "firebase/database";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect, useState } from "react";
-import { UploadOutlined } from "@ant-design/icons";
-
+import { Btn } from "../Reused/Reused";
 const SignUp = () => {
-  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     AOS.init({ duration: 1500 });
   }, []);
@@ -65,7 +56,10 @@ const SignUp = () => {
 
   // Sign up manually
   const onFinish = async (values) => {
+    setLoading(true);
     let uid = null;
+    console.log("values in the signup is", values);
+
     try {
       const res = await createUserWithEmailAndPassword(
         firebaseAuth,
@@ -77,6 +71,7 @@ const SignUp = () => {
       toast.success("Form Submitted Successfully!");
       uid = res?.user?.uid;
     } catch (err) {
+      console.log("error is here", err?.message);
       toast.error(err?.message);
     }
 
@@ -84,35 +79,20 @@ const SignUp = () => {
       await setDoc(doc(firestore, "users", uid), {
         values: {
           ...values,
-          // image: image,
         },
       });
       navigate("/login");
     } catch (err) {
     } finally {
+      setLoading(false);
     }
-  };
-
-  const props = {
-    listType: "picture",
-    beforeUpload(file) {
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          setImage(reader.result);
-          resolve(false);
-        };
-      });
-    },
-    showUploadList: false,
   };
 
   return (
     <>
       <div className="signup-contaier">
         <div className="container">
-          <div className="row align-items-center">
+          <div className="row align-items-center pb-3">
             <div className="col-md-6 col-12 " data-aos="fade-down-right">
               <img src={IMAGES.SIGNUP} alt="signup" className="img-fluid" />
             </div>
@@ -169,53 +149,6 @@ const SignUp = () => {
                       />
                     </Form.Item>
                   </div>
-                  <div
-                    className="d-grid gap-3 align"
-                    style={{ gridTemplateColumns: "1fr 1fr" }}
-                  >
-                    <div>
-                      <Form.Item
-                        className="signup-label"
-                        label="Age"
-                        name="age"
-                        rules={[
-                          { required: true, message: "Enter age" },
-                          {
-                            pattern: /^[0-9]{1,3}$/,
-                            message:
-                              "Enter a valid number (1 to 3 digits only)",
-                          },
-                        ]}
-                      >
-                        <InputNumber
-                          className="p-1 rounded-pill"
-                          style={{ width: "fit-content" }}
-                          placeholder="Enter age"
-                          max={999}
-                          controls={false}
-                          stringMode
-                        />
-                      </Form.Item>
-                    </div>
-
-                    <div>
-                      <Form.Item
-                        className="signup-label"
-                        label="Gender"
-                        name="gender"
-                        rules={[{ required: true, message: "Select gender" }]}
-                      >
-                        <Select
-                          placeholder="Select gender"
-                          className="p-2 rounded-pill"
-                        >
-                          <Select.Option value="male">Male</Select.Option>
-                          <Select.Option value="female">Female</Select.Option>
-                          <Select.Option value="other">Other</Select.Option>
-                        </Select>
-                      </Form.Item>
-                    </div>
-                  </div>
 
                   <Form.Item
                     className="signup-label"
@@ -235,23 +168,8 @@ const SignUp = () => {
                     />
                   </Form.Item>
 
-                  {/* <div className="d-flex gap-4 mb-2">
-                    <label htmlFor="upload" className="signup-label mb-2">
-                      Upload Image
-                    </label>
-                    <Upload {...props}>
-                      <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                    </Upload>
-                  </div> */}
-
                   <Form.Item label={null} className="signup-label">
-                    <Button
-                      className="mt-1 button-submit"
-                      type="dark"
-                      htmlType="submit"
-                    >
-                      Submit
-                    </Button>
+                    <Btn isLoading={loading} text="Submit" type="submit" />
                   </Form.Item>
                 </Form>
 
